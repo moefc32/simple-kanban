@@ -1,16 +1,40 @@
 <script>
-  function openModalCreate() {}
-  function openModalSettings() {}
+  import { getModalStore } from "@skeletonlabs/skeleton";
+
+  import Backlog from "./modal/Backlog.svelte";
+  import Settings from "./modal/Settings.svelte";
+
+  const modalStore = getModalStore();
+
+  function openModalCreate() {
+    const modal = {
+      type: "alert",
+      title: "Create New Backlog",
+      body: "This is an example modal.",
+      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+    };
+
+    modalStore.trigger(modal);
+  }
+  function openModalSettings() {
+    const modal = {
+      type: "alert",
+      title: "Application Settings",
+      body: "This is an example modal.",
+      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+    };
+    modalStore.trigger(modal);
+  }
 </script>
 
-<header class="bg-white border-b-2 w-full">
+<header class="bg-slate-700 text-white border-b-2 w-full">
   <nav class="flex items-center justify-between px-6 py-5">
     <div class="flex flex-1">
-      <a href="/" class="text-xl">Kanban Board</a>
+      <a href="/" class="font-semibold text-xl">Kanban Board</a>
     </div>
     <div class="flex flex-1 gap-x-6 justify-end">
       <button
-        class="flex gap-1 font-semibold leading-6 text-gray-800"
+        class="flex gap-1 font-semibold leading-6"
         on:click={() => openModalCreate()}
       >
         <svg
@@ -32,8 +56,8 @@
         Add Backlog
       </button>
       <button
-        class="flex gap-1 font-semibold leading-6 text-gray-800"
-        on:@click={() => openModalSettings()}
+        class="flex gap-1 font-semibold leading-6"
+        on:click={() => openModalSettings()}
       >
         <svg
           class="w-6 h-6"

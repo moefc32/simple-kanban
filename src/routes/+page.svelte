@@ -1,22 +1,36 @@
 <script>
-  import Backlog from "./partial/modal/Backlog.svelte";
-  import Settings from "./partial/modal/Settings.svelte";
+  import { getModalStore } from "@skeletonlabs/skeleton";
 
   const backlogData = {
-    to_do: [],
+    to_do: [
+      {
+        title: "Finish this project",
+      },
+    ],
     in_progress: [],
     in_review: [],
     done: [],
   };
   let enableReview = true;
 
-  function openModalUpdate() {}
+  const modalStore = getModalStore();
+
+  function openModalUpdate() {
+    const modal = {
+      type: "alert",
+      title: "Backlog",
+      body: "This is an example modal.",
+      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+    };
+
+    modalStore.trigger(modal);
+  }
 </script>
 
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<main class="flex flex-row flex-1 mb-auto pt-3 w-full">
+<main class="flex flex-row flex-1 mb-auto pt-3 bg-slate-50 w-full">
   <div class="flex flex-1 px-3 overflow-x-auto">
     <div class="backlog-category flex flex-1 flex-col gap-2 px-2 border-r">
       <div class="flex gap-1 leading-5 px-1 py-3 border-b">
@@ -39,8 +53,11 @@
       </div>
       <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
         {#each backlogData.to_do as item}
-          <div class="p-3 border w-full" on:click={() => openModalUpdate(item)}>
-            <strong x-text="item.title"></strong>
+          <div
+            class="backlog-item p-3 border w-full"
+            on:click={() => openModalUpdate(item)}
+          >
+            <strong>{item.title}</strong>
           </div>
         {/each}
       </div>
@@ -67,8 +84,11 @@
       </div>
       <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
         {#each backlogData.in_progress as item}
-          <div class="p-3 border w-full" on:click={() => openModalUpdate(item)}>
-            <strong x-text="item.title"></strong>
+          <div
+            class="backlog-item p-3 border w-full"
+            on:click={() => openModalUpdate(item)}
+          >
+            <strong>{item.title}</strong>
           </div>
         {/each}
       </div>
@@ -96,10 +116,10 @@
         <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
           {#each backlogData.in_review as item}
             <div
-              class="p-3 border w-full"
+              class="backlog-item p-3 border w-full"
               on:click={() => openModalUpdate(item)}
             >
-              <strong x-text="item.title"></strong>
+              <strong>{item.title}</strong>
             </div>
           {/each}
         </div>
@@ -127,17 +147,17 @@
       </div>
       <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
         {#each backlogData.done as item}
-          <div class="p-3 border w-full" on:click={() => openModalUpdate(item)}>
-            <strong x-text="item.title"></strong>
+          <div
+            class="backlog-item p-3 border w-full"
+            on:click={() => openModalUpdate(item)}
+          >
+            <strong>{item.title}</strong>
           </div>
         {/each}
       </div>
     </div>
   </div>
 </main>
-
-<!-- <Backlog />
-<Settings /> -->
 
 <style>
   main {
@@ -146,5 +166,9 @@
 
   .backlog-category {
     min-width: 200px;
+  }
+
+  .backlog-item {
+    cursor: move;
   }
 </style>

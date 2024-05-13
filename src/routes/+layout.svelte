@@ -1,8 +1,11 @@
 <script>
   import "../app.css";
+  import { initializeStores, Modal } from "@skeletonlabs/skeleton";
   import { page } from "$app/stores";
   import Header from "./partial/Header.svelte";
   import Footer from "./partial/Footer.svelte";
+
+  initializeStores();
 </script>
 
 <svelte:head>
@@ -15,4 +18,5 @@
   <Header />
   <slot />
   <Footer />
+  <Modal />
 {/if}
