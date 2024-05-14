@@ -8,18 +8,20 @@
 
   function openModalCreate() {
     modalStore.trigger({
-      type: "alert",
       title: "Create New Backlog",
-      body: "This is an example modal.",
-      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+      type: "component",
+      component: {
+        ref: Backlog,
+      },
     });
   }
   function openModalSettings() {
     modalStore.trigger({
-      type: "alert",
       title: "Application Settings",
-      body: "This is an example modal.",
-      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+      type: "component",
+      component: {
+        ref: Settings,
+      },
     });
   }
 </script>

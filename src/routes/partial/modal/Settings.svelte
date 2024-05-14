@@ -1,24 +1,39 @@
-<div class="modal fade" id="settings" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header text-bg-dark">
-        <h5 class="modal-title">Settings</h5>
-        <button type="button" class="btn-close bg-light" data-bs-dismiss="modal"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal">Close</button
-        >
-        <button type="button" class="btn btn-primary">
-          <i class="fa-solid fa-check fa-fw me-1"></i> Save changes
-        </button>
-      </div>
-    </div>
+<script>
+  import { getModalStore } from "@skeletonlabs/skeleton";
+  export let parent;
+
+  const modalStore = getModalStore();
+  const formData = {
+    name: "",
+  };
+
+  function onFormSubmit() {
+    if ($modalStore[0].response) $modalStore[0].response(formData);
+    modalStore.close();
+  }
+</script>
+
+{#if $modalStore[0]}
+  <div class="card p-4 w-modal shadow-xl space-y-4">
+    <header class="my-2 text-2xl font-bold">
+      {$modalStore[0].title}
+    </header>
+    <label class="label">
+      <span>Name</span>
+      <input
+        type="text"
+        class="input"
+        placeholder="Enter name..."
+        bind:value={formData.name}
+      />
+    </label>
+    <footer class="modal-footer {parent.regionFooter}">
+      <button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>
+        {parent.buttonTextCancel}
+      </button>
+      <button class="btn {parent.buttonPositive}" on:click={onFormSubmit}>
+        Save
+      </button>
+    </footer>
   </div>
-</div>
+{/if}

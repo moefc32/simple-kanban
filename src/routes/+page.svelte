@@ -3,6 +3,8 @@
   import { flip } from "svelte/animate";
   import datePrettier from "$lib/datePrettier";
 
+  import Backlog from "./partial/modal/Backlog.svelte";
+
   const modalStore = getModalStore();
 
   export let backlogData = {
@@ -45,10 +47,11 @@
 
   function openModalUpdate() {
     modalStore.trigger({
-      type: "alert",
-      title: "Backlog",
-      body: "This is an example modal.",
-      modalClasses: "!bg-slate-700 !text-white !rounded-lg",
+      title: "Backlog Details",
+      type: "component",
+      component: {
+        ref: Backlog,
+      },
     });
   }
 
