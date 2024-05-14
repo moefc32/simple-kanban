@@ -6,5 +6,5 @@
 <footer
   class="px-6 py-4 border-t-2 text-center text-sm bg-slate-50 text-gray-500 w-full"
 >
-  Simple Kanban Board by Mfc &copy; {copyrightYear}
+  Simple Kanban by Mfc &copy; {copyrightYear}
 </footer>
