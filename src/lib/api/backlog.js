@@ -1,6 +1,15 @@
+import { ObjectId } from 'mongodb';
+import mongoClient from '../mongodb';
+
+const collection = mongoClient.db().collection('backlog');
+
 export default {
     getData: async () => {
-        const response = await fetch('/api/backlog');
-        return await response.json();
+        try {
+            const result = await collection.find().toArray();
+            return result;
+        } catch (e) {
+            console.error(e);
+        }
     },
 }

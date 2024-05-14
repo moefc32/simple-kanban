@@ -7,42 +7,9 @@
 
   const modalStore = getModalStore();
 
-  export let backlogData = {
-    to_do: [
-      {
-        id: 4,
-        title: "Finish this project",
-        due: "1719260820000",
-      },
-      {
-        id: 5,
-        title: "Brooo what are you doing quick do this one too",
-        due: "1719260820000",
-      },
-    ],
-    in_progress: [
-      {
-        id: 3,
-        title: "Doing something",
-        due: "1719260820000",
-      },
-    ],
-    in_review: [
-      {
-        id: 2,
-        title: "Hope this one isnt going to BTD",
-        due: "1715648000000",
-      },
-    ],
-    done: [
-      {
-        id: 1,
-        title: "Done something",
-        due: "1715648000000",
-      },
-    ],
-  };
+  export let data;
 
+  let { backlogData } = data;
   let enableReview = true;
 
   function openModalUpdate() {

@@ -1,27 +1,28 @@
-import { error } from '@sveltejs/kit';
+import { VITE_APP_NAME } from '$env/static/private'
+import { json, error } from '@sveltejs/kit';
 import model from '$lib/api/backlog';
 
 export async function GET() {
-    // error(400, 'min and max must be numbers, and min must be less than max');
+    try {
+        const result = await model.getData();
+        const items = {
+            to_do: [],
+            in_progress: [],
+            in_review: [],
+            done: [],
+        };
 
-    const result = await model.getData();
-    const items = {
-        toDo: [],
-        inProgress: [],
-        inReview: [],
-        done: [],
-    };
+        await result.forEach(item => {
+            items[item.progress || 'to_do'].push(item);
+        });
 
-    await result.forEach(item => {
-        items[item.progress || 'toDo'].push(item);
-    });
-
-    return await res.status(200).send({
-        application: APP_NAME,
-        data: items,
-    });
-
-    return new Response(String(random));
+        return json({
+            application: VITE_APP_NAME,
+            data: items,
+        });
+    } catch (e) {
+        error(500, e);
+    }
 }
 
 export async function POST() {
@@ -33,17 +34,15 @@ export async function POST() {
         const data = { title, detail, urgency };
         const result = await model.createData(data);
 
-        return await res.status(200).send({
-            application: APP_NAME,
+        return json({
+            application: VITE_APP_NAME,
             data: result,
         });
     }
 
     return await res.status(400).send({
-        application: APP_NAME,
+        application: VITE_APP_NAME,
     });
-
-    return new Response(String(random));
 }
 
 export async function PATCH() {
@@ -59,12 +58,10 @@ export async function PATCH() {
 
     const result = await model.editData(id, data);
 
-    return await res.status(200).send({
-        application: APP_NAME,
+    return json({
+        application: VITE_APP_NAME,
         data: result,
     });
-
-    return new Response(String(random));
 }
 
 export async function DELETE() {
@@ -73,10 +70,8 @@ export async function DELETE() {
     const id = req.params.id;
     const result = await model.deleteData(id);
 
-    return await res.status(200).send({
-        application: APP_NAME,
+    return json({
+        application: VITE_APP_NAME,
         data: result,
     });
-
-    return new Response(String(random));
 }
