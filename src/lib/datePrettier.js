@@ -17,6 +17,6 @@ export default function datePrettier(timestamp, isDateTime = true) {
     if (isDateTime) {
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     } else {
-        return `${hours}:${minutes}`;
+        return `${day}/${month}/${year}`;
     }
 }

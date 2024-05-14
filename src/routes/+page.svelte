@@ -1,29 +1,73 @@
 <script>
   import { getModalStore } from "@skeletonlabs/skeleton";
-
-  const backlogData = {
-    to_do: [
-      {
-        title: "Finish this project",
-      },
-    ],
-    in_progress: [],
-    in_review: [],
-    done: [],
-  };
-  let enableReview = true;
+  import { flip } from "svelte/animate";
+  import datePrettier from "$lib/datePrettier";
 
   const modalStore = getModalStore();
 
+  export let backlogData = {
+    to_do: [
+      {
+        id: 4,
+        title: "Finish this project",
+        due: "1719260820000",
+      },
+      {
+        id: 5,
+        title: "Brooo what are you doing quick do this one too",
+        due: "1719260820000",
+      },
+    ],
+    in_progress: [
+      {
+        id: 3,
+        title: "Doing something",
+        due: "1719260820000",
+      },
+    ],
+    in_review: [
+      {
+        id: 2,
+        title: "Hope this one isnt going to BTD",
+        due: "1715648000000",
+      },
+    ],
+    done: [
+      {
+        id: 1,
+        title: "Done something",
+        due: "1715648000000",
+      },
+    ],
+  };
+
+  let enableReview = true;
+
   function openModalUpdate() {
-    const modal = {
+    modalStore.trigger({
       type: "alert",
       title: "Backlog",
       body: "This is an example modal.",
       modalClasses: "!bg-slate-700 !text-white !rounded-lg",
-    };
+    });
+  }
 
-    modalStore.trigger(modal);
+  function dragStart(event, backlogStatus, itemIndex) {
+    const data = { backlogStatus, itemIndex };
+    event.dataTransfer.setData("text/plain", JSON.stringify(data));
+  }
+
+  function drop(event, backlogStatus) {
+    event.preventDefault();
+
+    const json = event.dataTransfer.getData("text/plain");
+    const data = JSON.parse(json);
+    const [item] = backlogData[data.backlogStatus].splice(data.itemIndex, 1);
+
+    backlogData[backlogStatus].push(item);
+    backlogData = { ...backlogData };
+
+    console.log(`Moving backlog ${item.title} to ${backlogStatus}.`);
   }
 </script>
 
@@ -51,13 +95,24 @@
         </svg>
         To-Do
       </div>
-      <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
-        {#each backlogData.to_do as item}
+      <div
+        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        on:dragover={(event) => event.preventDefault()}
+        on:drop={(event) => drop(event, "to_do")}
+      >
+        {#each backlogData.to_do as item, itemIndex (item)}
           <div
-            class="backlog-item p-3 border w-full"
+            class="backlog-item px-4 py-3 border rounded-lg bg-white w-full shadow-sm"
+            title={item.title}
             on:click={() => openModalUpdate(item)}
+            draggable={true}
+            on:dragstart={(event) => dragStart(event, "to_do", itemIndex)}
+            animate:flip={{ duration: 250 }}
           >
-            <strong>{item.title}</strong>
+            <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
+            <div class="text-xs text-gray-700">
+              {"Due " + datePrettier(item.due, false)}
+            </div>
           </div>
         {/each}
       </div>
@@ -82,13 +137,24 @@
         </svg>
         In Progress
       </div>
-      <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
-        {#each backlogData.in_progress as item}
+      <div
+        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        on:dragover={(event) => event.preventDefault()}
+        on:drop={(event) => drop(event, "in_progress")}
+      >
+        {#each backlogData.in_progress as item, itemIndex (item)}
           <div
-            class="backlog-item p-3 border w-full"
+            class="backlog-item px-4 py-3 border rounded-lg bg-white w-full shadow-sm"
+            title={item.title}
             on:click={() => openModalUpdate(item)}
+            draggable={true}
+            on:dragstart={(event) => dragStart(event, "in_progress", itemIndex)}
+            animate:flip={{ duration: 250 }}
           >
-            <strong>{item.title}</strong>
+            <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
+            <div class="text-xs text-gray-700">
+              {"Due " + datePrettier(item.due, false)}
+            </div>
           </div>
         {/each}
       </div>
@@ -113,13 +179,24 @@
           </svg>
           In Review
         </div>
-        <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
-          {#each backlogData.in_review as item}
+        <div
+          class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+          on:dragover={(event) => event.preventDefault()}
+          on:drop={(event) => drop(event, "in_review")}
+        >
+          {#each backlogData.in_review as item, itemIndex (item)}
             <div
-              class="backlog-item p-3 border w-full"
+              class="backlog-item px-4 py-3 border rounded-lg bg-white w-full shadow-sm"
+              title={item.title}
               on:click={() => openModalUpdate(item)}
+              draggable={true}
+              on:dragstart={(event) => dragStart(event, "in_review", itemIndex)}
+              animate:flip={{ duration: 250 }}
             >
-              <strong>{item.title}</strong>
+              <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
+              <div class="text-xs text-gray-700">
+                {"Due " + datePrettier(item.due, false)}
+              </div>
             </div>
           {/each}
         </div>
@@ -145,13 +222,24 @@
         </svg>
         Done
       </div>
-      <div class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3">
-        {#each backlogData.done as item}
+      <div
+        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        on:dragover={(event) => event.preventDefault()}
+        on:drop={(event) => drop(event, "done")}
+      >
+        {#each backlogData.done as item, itemIndex (item)}
           <div
-            class="backlog-item p-3 border w-full"
+            class="backlog-item px-4 py-3 border rounded-lg bg-white w-full shadow-sm"
+            title={item.title}
             on:click={() => openModalUpdate(item)}
+            draggable={true}
+            on:dragstart={(event) => dragStart(event, "done", itemIndex)}
+            animate:flip={{ duration: 250 }}
           >
-            <strong>{item.title}</strong>
+            <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
+            <div class="text-xs text-gray-700">
+              {"Due " + datePrettier(item.due, false)}
+            </div>
           </div>
         {/each}
       </div>
@@ -169,6 +257,6 @@
   }
 
   .backlog-item {
-    cursor: move;
+    cursor: grab;
   }
 </style>

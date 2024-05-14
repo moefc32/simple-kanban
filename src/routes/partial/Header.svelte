@@ -7,32 +7,29 @@
   const modalStore = getModalStore();
 
   function openModalCreate() {
-    const modal = {
+    modalStore.trigger({
       type: "alert",
       title: "Create New Backlog",
       body: "This is an example modal.",
       modalClasses: "!bg-slate-700 !text-white !rounded-lg",
-    };
-
-    modalStore.trigger(modal);
+    });
   }
   function openModalSettings() {
-    const modal = {
+    modalStore.trigger({
       type: "alert",
       title: "Application Settings",
       body: "This is an example modal.",
       modalClasses: "!bg-slate-700 !text-white !rounded-lg",
-    };
-    modalStore.trigger(modal);
+    });
   }
 </script>
 
 <header class="bg-slate-700 text-white border-b-2 w-full">
   <nav class="flex items-center justify-between px-6 py-5">
-    <div class="flex flex-1">
+    <div class="flex">
       <a href="/" class="font-semibold text-xl">Kanban Board</a>
     </div>
-    <div class="flex flex-1 gap-x-6 justify-end">
+    <div class="flex flex-1 gap-x-4 sm:gap-x-6 ms-3 justify-end">
       <button
         class="flex gap-1 font-semibold leading-6"
         on:click={() => openModalCreate()}
@@ -53,7 +50,7 @@
             d="M5 12h14m-7 7V5"
           />
         </svg>
-        Add Backlog
+        <span class="hidden sm:inline">Create Backlog</span>
       </button>
       <button
         class="flex gap-1 font-semibold leading-6"
