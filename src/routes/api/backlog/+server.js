@@ -11,9 +11,27 @@ export async function GET() {
             in_review: [],
             done: [],
         };
+        const urgencyOrder = {
+            'urgent': 1,
+            'medium': 2,
+            'low': 3
+        };
 
-        await result.forEach(item => {
-            items[item.progress || 'to_do'].push(item);
+        const sortedResult = result.sort((a, b) => {
+            if (a.progress < b.progress) return -1;
+            if (a.progress > b.progress) return 1;
+
+            return (urgencyOrder[a.urgency] || 99) - (urgencyOrder[b.urgency] || 99);
+        });
+
+        sortedResult.forEach(item => {
+            const progressCategory = item.progress || 'to_do';
+
+            if (items[progressCategory]) {
+                items[progressCategory].push(item);
+            } else {
+                items['to_do'].push(item);
+            }
         });
 
         return json({
@@ -21,16 +39,30 @@ export async function GET() {
             data: items,
         });
     } catch (e) {
+        console.error(e);
         error(500, e);
     }
 }
 
 export async function POST({ request }) {
     try {
-        const { title = '', detail = '', urgency = '' } = await request.json() || {};
+        const {
+            title = '',
+            detail = '',
+            urgency = '',
+            due = '',
+            progress = '',
+        } = await request.json() || {};
 
-        if (title && detail && urgency) {
-            const data = { title, detail, urgency };
+        if (title && urgency && progress) {
+            const dueDate = new Date(due);
+            const data = {
+                title,
+                detail,
+                urgency,
+                due: parseInt(dueDate.getTime()),
+                progress: progress ?? 'to_do',
+            };
             const result = await model.createData(data);
 
             return json({
@@ -41,19 +73,30 @@ export async function POST({ request }) {
 
         error(400, e);
     } catch (e) {
+        console.error(e);
         error(500, e);
     }
 }
 
-export async function PATCH({ params, request }) {
+export async function PATCH({ url, request }) {
     try {
-        const { id } = params;
-        const { title = '', detail = '', urgency = '' } = await request.json() || {};
-        const data = {
-            title: title ?? undefined,
-            detail: detail ?? undefined,
-            urgency: urgency ?? undefined,
-        };
+        const id = url.searchParams.get('id');
+        const {
+            title = '',
+            detail = '',
+            urgency = '',
+            due = '',
+            progress = '',
+        } = await request.json() || {};
+        const dueDate = due && new Date(due);
+
+        const data = {};
+        if (title) data.title = title;
+        if (detail) data.detail = detail;
+        if (urgency) data.urgency = urgency;
+        if (due) data.due = parseInt(dueDate.getTime());
+        if (progress) data.progress = progress;
+
         const result = await model.editData(id, data);
 
         return json({
@@ -61,20 +104,27 @@ export async function PATCH({ params, request }) {
             data: result,
         });
     } catch (e) {
+        console.error(e);
         error(500, e);
     }
 }
 
-export async function DELETE({ params }) {
+export async function DELETE({ url }) {
     try {
-        const { id } = params;
-        const result = await model.deleteData(id);
+        const id = url.searchParams.get('id');
 
-        return json({
-            application: VITE_APP_NAME,
-            data: result,
-        });
+        if (id) {
+            const result = await model.deleteData(id);
+
+            return json({
+                application: VITE_APP_NAME,
+                data: result,
+            });
+        }
+
+        error(400, e);
     } catch (e) {
+        console.error(e);
         error(500, e);
     }
 }

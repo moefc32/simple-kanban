@@ -17,7 +17,6 @@ export default {
         try {
             const result = await backlogCollection.insertOne({
                 ...data,
-                progress: 'to_do',
             });
 
             return result;

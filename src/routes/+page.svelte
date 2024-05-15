@@ -1,33 +1,66 @@
 <script>
-  import { getModalStore } from "@skeletonlabs/skeleton";
+  import { setContext } from "svelte";
+  import { getModalStore, getToastStore } from "@skeletonlabs/skeleton";
   import { flip } from "svelte/animate";
+  import axios from "axios";
   import datePrettier from "$lib/datePrettier";
 
+  import Header from "./partial/Header.svelte";
+  import Footer from "./partial/Footer.svelte";
   import Backlog from "./partial/modal/Backlog.svelte";
 
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   export let data;
 
   let { backlogData } = data;
   let enableReview = true;
 
-  function openModalUpdate() {
+  function openModalUpdate(item) {
     modalStore.trigger({
       title: "Backlog Details",
       type: "component",
       component: {
         ref: Backlog,
       },
+      meta: {
+        ...item,
+      },
+      response: async (r) => {
+        if (r?.type === "submit") {
+          await axios.patch(`api/backlog/?id=${r.formData._id}`, r.formData);
+          await loadData();
+        }
+
+        if (r?.type === "delete") {
+          modalStore.trigger({
+            title: "Delete Backlog",
+            type: "confirm",
+            body: `Are you sure you want to delete this backlog?`,
+            response: async (rsp) => {
+              if (rsp) {
+                await axios.delete(`api/backlog/?id=${r.formData._id}`);
+                await loadData();
+
+                toastStore.trigger({
+                  message: "Backlog deleted successfully.",
+                  background: "variant-filled-error",
+                });
+              }
+            },
+          });
+        }
+      },
     });
   }
 
-  function dragStart(event, backlogStatus, itemIndex) {
+  async function dragStart(event, backlogStatus, itemIndex) {
     const data = { backlogStatus, itemIndex };
     event.dataTransfer.setData("text/plain", JSON.stringify(data));
   }
 
-  function drop(event, backlogStatus) {
+  async function drop(event, backlogStatus) {
     event.preventDefault();
 
     const json = event.dataTransfer.getData("text/plain");
@@ -37,10 +70,20 @@
     backlogData[backlogStatus].push(item);
     backlogData = { ...backlogData };
 
-    console.log(`Moving backlog ${item.title} to ${backlogStatus}.`);
+    await axios.patch(`api/backlog/?id=${item._id}`, {
+      progress: backlogStatus,
+    });
   }
+
+  async function loadData() {
+    const result = await axios.get("api/backlog");
+    backlogData = result.data.data;
+  }
+
+  setContext("loadData", loadData);
 </script>
 
+<Header />
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -66,7 +109,7 @@
         To-Do
       </div>
       <div
-        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        class="backlog-container flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
         on:dragover={(event) => event.preventDefault()}
         on:drop={(event) => drop(event, "to_do")}
       >
@@ -80,9 +123,16 @@
             animate:flip={{ duration: 250 }}
           >
             <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
-            <div class="text-xs text-gray-700">
+            <div class="mb-2 text-xs text-gray-700">
               {"Due " + datePrettier(item.due, false)}
             </div>
+            {#if item.urgency === "low"}
+              <span class="badge variant-filled-surface text-xs">Low</span>
+            {:else if item.urgency === "medium"}
+              <span class="badge variant-filled-warning text-xs">Medium</span>
+            {:else}
+              <span class="badge variant-filled-error text-xs">Urgent</span>
+            {/if}
           </div>
         {/each}
       </div>
@@ -108,7 +158,7 @@
         In Progress
       </div>
       <div
-        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        class="backlog-container flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
         on:dragover={(event) => event.preventDefault()}
         on:drop={(event) => drop(event, "in_progress")}
       >
@@ -122,9 +172,16 @@
             animate:flip={{ duration: 250 }}
           >
             <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
-            <div class="text-xs text-gray-700">
+            <div class="mb-2 text-xs text-gray-700">
               {"Due " + datePrettier(item.due, false)}
             </div>
+            {#if item.urgency === "low"}
+              <span class="badge variant-filled-surface text-xs">Low</span>
+            {:else if item.urgency === "medium"}
+              <span class="badge variant-filled-warning text-xs">Medium</span>
+            {:else}
+              <span class="badge variant-filled-error text-xs">Urgent</span>
+            {/if}
           </div>
         {/each}
       </div>
@@ -150,7 +207,7 @@
           In Review
         </div>
         <div
-          class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+          class="backlog-container flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
           on:dragover={(event) => event.preventDefault()}
           on:drop={(event) => drop(event, "in_review")}
         >
@@ -164,9 +221,16 @@
               animate:flip={{ duration: 250 }}
             >
               <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
-              <div class="text-xs text-gray-700">
+              <div class="mb-2 text-xs text-gray-700">
                 {"Due " + datePrettier(item.due, false)}
               </div>
+              {#if item.urgency === "low"}
+                <span class="badge variant-filled-surface text-xs">Low</span>
+              {:else if item.urgency === "medium"}
+                <span class="badge variant-filled-warning text-xs">Medium</span>
+              {:else}
+                <span class="badge variant-filled-error text-xs">Urgent</span>
+              {/if}
             </div>
           {/each}
         </div>
@@ -193,7 +257,7 @@
         Done
       </div>
       <div
-        class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+        class="backlog-container flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
         on:dragover={(event) => event.preventDefault()}
         on:drop={(event) => drop(event, "done")}
       >
@@ -207,15 +271,23 @@
             animate:flip={{ duration: 250 }}
           >
             <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
-            <div class="text-xs text-gray-700">
+            <div class="mb-2 text-xs text-gray-700">
               {"Due " + datePrettier(item.due, false)}
             </div>
+            {#if item.urgency === "low"}
+              <span class="badge variant-filled-surface text-xs">Low</span>
+            {:else if item.urgency === "medium"}
+              <span class="badge variant-filled-warning text-xs">Medium</span>
+            {:else}
+              <span class="badge variant-filled-error text-xs">Urgent</span>
+            {/if}
           </div>
         {/each}
       </div>
     </div>
   </div>
 </main>
+<Footer />
 
 <style>
   main {
@@ -224,6 +296,10 @@
 
   .backlog-category {
     min-width: 200px;
+  }
+
+  .backlog-container {
+    max-height: calc(100vh - 190px);
   }
 
   .backlog-item {

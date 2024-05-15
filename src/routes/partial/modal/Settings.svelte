@@ -7,8 +7,25 @@
     name: "",
   };
 
+  async function deleteBacklogs() {
+    if ($modalStore[0].response) {
+      $modalStore[0].response({
+        type: "delete",
+        formData,
+      });
+    }
+
+    modalStore.close();
+  }
+
   function onFormSubmit() {
-    if ($modalStore[0].response) $modalStore[0].response(formData);
+    if ($modalStore[0].response) {
+      $modalStore[0].response({
+        type: "submit",
+        formData,
+      });
+    }
+
     modalStore.close();
   }
 </script>
@@ -20,14 +37,15 @@
     </header>
     <label class="label">
       <span>Name</span>
-      <input
-        type="text"
-        class="input"
-        placeholder="Enter name..."
-        bind:value={formData.name}
-      />
+      <input type="text" class="input" bind:value={formData.name} />
     </label>
     <footer class="modal-footer {parent.regionFooter}">
+      <button
+        class="btn bg-rose-900 text-white me-auto"
+        on:click={() => deleteBacklogs()}
+      >
+        Delete All Backlogs
+      </button>
       <button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>
         {parent.buttonTextCancel}
       </button>

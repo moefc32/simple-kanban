@@ -1,10 +1,14 @@
 <script>
-  import { getModalStore } from "@skeletonlabs/skeleton";
+  import { getContext } from "svelte";
+  import { getModalStore, getToastStore } from "@skeletonlabs/skeleton";
+  import axios from "axios";
 
   import Backlog from "./modal/Backlog.svelte";
   import Settings from "./modal/Settings.svelte";
 
+  const loadData = getContext("loadData");
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   function openModalCreate() {
     modalStore.trigger({
@@ -13,14 +17,51 @@
       component: {
         ref: Backlog,
       },
+      response: async (r) => {
+        if (r?.type === "submit") {
+          await axios.post("api/backlog", r.formData);
+          await loadData();
+
+          toastStore.trigger({
+            message: "New backlog created successfully.",
+            background: "variant-filled-success",
+          });
+        }
+      },
     });
   }
+
   function openModalSettings() {
     modalStore.trigger({
       title: "Application Settings",
       type: "component",
       component: {
         ref: Settings,
+      },
+      response: async (r) => {
+        if (r?.type === "submit") {
+          // await axios.patch("api/site", r.formData);
+          await loadData();
+        }
+
+        if (r?.type === "delete") {
+          modalStore.trigger({
+            title: "Delete All Backlog",
+            type: "confirm",
+            body: `Are you sure you want to delete all backlog?`,
+            response: async (rsp) => {
+              if (rsp) {
+                // await axios.delete(`api/site`);
+                await loadData();
+
+                toastStore.trigger({
+                  message: "All backlog deleted successfully.",
+                  background: "variant-filled-error",
+                });
+              }
+            },
+          });
+        }
       },
     });
   }
