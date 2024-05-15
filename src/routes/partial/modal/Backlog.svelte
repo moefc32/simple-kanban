@@ -84,20 +84,20 @@
       />
     </label>
     <label class="label">
-      <span>Urgency</span>
-      <select class="select" bind:value={formData.urgency}>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="urgent">Urgent</option>
-      </select>
-    </label>
-    <label class="label">
       <span>Status</span>
       <select class="select" bind:value={formData.progress}>
         <option value="to_do">To-Do</option>
         <option value="in_progress">In Progress</option>
         <option value="in_review">In Review</option>
         <option value="done">Done</option>
+      </select>
+    </label>
+    <label class="label">
+      <span>Urgency</span>
+      <select class="select" bind:value={formData.urgency}>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="urgent">Urgent</option>
       </select>
     </label>
     <label class="label">

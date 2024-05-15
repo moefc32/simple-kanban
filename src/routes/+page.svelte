@@ -174,17 +174,23 @@
               on:dragstart={(event) => dragStart(event, status, itemIndex)}
               animate:flip={{ duration: 250 }}
             >
-              <div class="mb-1 text-lg line-clamp-2">{item.title}</div>
-              <div class="mb-2 text-xs text-gray-700">
-                {"Due " + datePrettier(item.due, false)}
+              <div class="mb-1 text-lg line-clamp-2">
+                {item.title}
               </div>
-              {#if item.urgency === "low"}
-                <span class="badge variant-filled-surface text-xs">Low</span>
-              {:else if item.urgency === "medium"}
-                <span class="badge variant-filled-warning text-xs">Medium</span>
-              {:else}
-                <span class="badge variant-filled-error text-xs">Urgent</span>
-              {/if}
+              <div class="flex items-end">
+                {#if item.urgency === "low"}
+                  <span class="badge variant-filled-surface text-xs">Low</span>
+                {:else if item.urgency === "medium"}
+                  <span class="badge variant-filled-warning text-xs"
+                    >Medium</span
+                  >
+                {:else}
+                  <span class="badge variant-filled-error text-xs">Urgent</span>
+                {/if}
+                <span class="ms-auto text-xs text-gray-700">
+                  {"Due " + datePrettier(item.due, false)}
+                </span>
+              </div>
             </div>
           {/each}
         </div>
@@ -200,7 +206,7 @@
   }
 
   .backlog-category {
-    min-width: 250px;
+    min-width: 275px;
   }
 
   .backlog-container {
