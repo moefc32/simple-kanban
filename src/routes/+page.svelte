@@ -7,15 +7,16 @@
 
   import Header from "./partial/Header.svelte";
   import Footer from "./partial/Footer.svelte";
-  import Backlog from "./partial/modal/Backlog.svelte";
+  import Backlog from "./partial/BacklogModal.svelte";
 
   const modalStore = getModalStore();
   const toastStore = getToastStore();
 
   export let data;
 
+  const today = new Date().getTime();
+
   let { backlogData } = data;
-  let enableReview = true;
 
   function openModalUpdate(item) {
     modalStore.trigger({
@@ -187,7 +188,13 @@
                 {:else}
                   <span class="badge variant-filled-error text-xs">Urgent</span>
                 {/if}
-                <span class="ms-auto text-xs text-gray-700">
+                <span
+                  class={`ms-auto text-xs ${
+                    status !== "done" && item.due < today
+                      ? "text-red-500"
+                      : "text-gray-700"
+                  }`}
+                >
                   {"Due " + datePrettier(item.due, false)}
                 </span>
               </div>

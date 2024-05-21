@@ -54,7 +54,7 @@ export async function POST({ request }) {
             progress = '',
         } = await request.json() || {};
 
-        if (title && urgency && progress) {
+        if (title && urgency && due && progress) {
             const dueDate = new Date(due);
             const data = {
                 title,
@@ -92,10 +92,10 @@ export async function PATCH({ url, request }) {
 
         const data = {};
         if (title) data.title = title;
-        if (detail) data.detail = detail;
         if (urgency) data.urgency = urgency;
         if (due) data.due = parseInt(dueDate.getTime());
         if (progress) data.progress = progress;
+        data.detail = detail;
 
         const result = await model.editData(id, data);
 
