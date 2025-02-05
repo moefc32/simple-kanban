@@ -11,7 +11,7 @@ Simple Kanban board for project management
 
 ## Stack Used
 
-- [SvelteKit](https://kit.svelte.dev)
-- [Tailwind](https://tailwindcss.com)
-- [Skeleton UI](https://www.skeleton.dev)
-- [MongoDB](https://www.mongodb.com)
+- [SvelteKit](https://svelte.dev/)
+- [Tailwind](https://tailwindcss.com/)
+- [Skeleton UI](https://www.skeleton.dev/)
+- [MongoDB](https://www.mongodb.com/)
