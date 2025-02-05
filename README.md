@@ -1,7 +1,7 @@
 # Simple Kanban
 Simple Kanban board for project management
 
-![Application screenshot](screenshot.png)
+![screenshot](https://github.com/user-attachments/assets/6999c346-a739-4529-a234-7a2af4ddf0f5)
 
 ## Features
 
