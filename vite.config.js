@@ -1,15 +1,15 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
+import dotenv from 'dotenv';
 
-const env = loadEnv(
-	'all',
-	process.cwd(),
-);
+dotenv.config();
 
 export default defineConfig({
-	plugins: [sveltekit()],
-	server: {
-		host: env.VITE_IPBIND || 'localhost',
-		port: parseInt(env.VITE_PORT),
-	},
+    plugins: [
+        sveltekit(),
+    ],
+    server: {
+        host: process.env.VITE_IPBIND || 'localhost',
+        port: parseInt(process.env.VITE_PORT),
+    },
 });
