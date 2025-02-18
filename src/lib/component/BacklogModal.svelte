@@ -7,7 +7,7 @@
 
     const today = new Date();
     today.setHours(13, 0, 0, 0);
-    const dueToday = parseInt(today.toISOString().slice(0, 16));
+    const dueToday = parseInt(today.toISOString().slice(0, 16), 10);
 
     let formData = {
         _id: '',
@@ -19,7 +19,7 @@
     };
 
     function getFormattedDate(datetime) {
-        const date = datetime ? new Date(parseInt(datetime)) : new Date();
+        const date = datetime ? new Date(parseInt(datetime), 10) : new Date();
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');

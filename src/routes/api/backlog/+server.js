@@ -60,7 +60,7 @@ export async function POST({ request }) {
                 title,
                 detail,
                 urgency,
-                due: parseInt(dueDate.getTime()),
+                due: parseInt(dueDate.getTime(), 10),
                 progress: progress ?? 'to_do',
             };
             const result = await model.createData(data);
@@ -93,7 +93,7 @@ export async function PATCH({ url, request }) {
         const data = {};
         if (title) data.title = title;
         if (urgency) data.urgency = urgency;
-        if (due) data.due = parseInt(dueDate.getTime());
+        if (due) data.due = parseInt(dueDate.getTime(), 10);
         if (progress) data.progress = progress;
         data.detail = detail;
 
