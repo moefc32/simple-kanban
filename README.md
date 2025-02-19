@@ -1,4 +1,12 @@
 # Simple Kanban
+<a href="https://opensource.org/license/mit">
+    <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" height="24" />
+</a>
+<a href="https://pnpm.io/">
+    <img src="https://img.shields.io/badge/Package-PNPM-orange?style=flat-square" height="24" />
+</a>
+<br /><br />
+
 Simple Kanban board for project management
 
 ![image](https://github.com/user-attachments/assets/03834fee-1fdf-48b0-82fc-bd809fb06044)
