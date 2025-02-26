@@ -235,7 +235,7 @@
     }
 
     .backlog-container {
-        max-height: calc(100vh - 190px);
+        max-height: calc(100dvh - 190px);
     }
 
     .backlog-item {
