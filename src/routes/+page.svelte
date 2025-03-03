@@ -2,6 +2,7 @@
     import { setContext } from 'svelte';
     import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
     import { flip } from 'svelte/animate';
+    import { List, Repeat, Search, Check } from 'lucide-svelte';
     import axios from 'axios';
     import datePrettier from '$lib/datePrettier';
 
@@ -96,89 +97,29 @@
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<main class="flex flex-row flex-1 mb-auto pt-3 bg-slate-50 w-full">
+<main class="flex flex-row flex-1 mt-[70px] mb-auto pt-3 bg-slate-50 w-full">
     <div class="flex flex-1 px-3 overflow-x-auto">
         {#each Object.entries(backlogData) as [status, backlogs]}
-            <div
-                class="backlog-category flex flex-1 flex-col gap-2 px-2 border-r"
-            >
-                <div class="flex gap-1 leading-5 px-1 py-3 border-b">
+            <div class="flex flex-1 flex-col gap-2 px-2 min-w-[275px] border-r">
+                <div class="flex items-center gap-1 px-1 py-3 border-b">
                     {#if status === 'to_do'}
-                        <svg
-                            class="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-width="2"
-                                d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5"
-                            />
-                        </svg> To-Do
+                        <List size={16} /> To-Do
                     {:else if status === 'in_progress'}
-                        <svg
-                            class="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
-                            />
-                        </svg> In Progress
+                        <Repeat size={16} /> In Progress
                     {:else if status === 'in_review'}
-                        <svg
-                            class="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-width="2"
-                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                            />
-                        </svg> In Review
+                        <Search size={16} /> In Review
                     {:else}
-                        <svg
-                            class="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 11.917 9.724 16.5 19 7.5"
-                            />
-                        </svg> Done
+                        <Check size={16} /> Done
                     {/if}
                 </div>
                 <div
-                    class="backlog-container flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3"
+                    class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 pb-3 max-h-[calc(100dvh-190px)]"
                     on:dragover={event => event.preventDefault()}
                     on:drop={event => drop(event, status)}
                 >
                     {#each backlogs as item, itemIndex (item)}
                         <div
-                            class="backlog-item px-4 py-3 border rounded-lg bg-white w-full shadow-sm"
+                            class="px-4 py-3 border rounded-lg bg-white w-full shadow-sm cursor-grab"
                             title={item.title}
                             on:click={() => openModalUpdate(item)}
                             draggable={true}
@@ -224,21 +165,3 @@
     </div>
 </main>
 <Footer />
-
-<style>
-    main {
-        margin-top: 70px;
-    }
-
-    .backlog-category {
-        min-width: 275px;
-    }
-
-    .backlog-container {
-        max-height: calc(100dvh - 190px);
-    }
-
-    .backlog-item {
-        cursor: grab;
-    }
-</style>

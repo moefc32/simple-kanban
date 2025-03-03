@@ -27,6 +27,7 @@
         "@fontsource-variable/plus-jakarta-sans": "^5.1.1",
         "axios": "^1.7.9",
         "dotenv": "^16.4.7",
+        "lucide-svelte": "^0.477.0",
         "md5": "^2.3.0",
         "mongodb": "^6.13.1"
     },
