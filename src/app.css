@@ -1,8 +1,24 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton/optional/presets';
+@import '@skeletonlabs/skeleton/themes/legacy';
 
 @import '@fontsource-variable/plus-jakarta-sans';
+
+@source "../node_modules/@skeletonlabs/skeleton-svelte/dist";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
 
 input::-ms-reveal,
 input::-ms-clear,

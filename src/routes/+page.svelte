@@ -1,6 +1,5 @@
 <script>
     import { setContext } from 'svelte';
-    import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
     import { flip } from 'svelte/animate';
     import { List, Repeat, Search, Check } from 'lucide-svelte';
     import axios from 'axios';
@@ -52,7 +51,7 @@
 
                                 toastStore.trigger({
                                     message: 'Backlog deleted successfully.',
-                                    background: 'variant-filled-error',
+                                    background: 'preset-filled-error-500',
                                 });
                             }
                         },
@@ -119,7 +118,7 @@
                 >
                     {#each backlogs as item, itemIndex (item)}
                         <div
-                            class="px-4 py-3 border rounded-lg bg-white w-full shadow-sm cursor-grab"
+                            class="px-4 py-3 border rounded-lg bg-white w-full shadow-xs cursor-grab"
                             title={item.title}
                             on:click={() => openModalUpdate(item)}
                             draggable={true}
@@ -133,17 +132,17 @@
                             <div class="flex items-end">
                                 {#if item.urgency === 'low'}
                                     <span
-                                        class="badge variant-filled-surface text-xs"
+                                        class="badge preset-filled-surface-500 text-xs"
                                         >Low</span
                                     >
                                 {:else if item.urgency === 'medium'}
                                     <span
-                                        class="badge variant-filled-warning text-xs"
+                                        class="badge preset-filled-warning-500 text-xs"
                                         >Medium</span
                                     >
                                 {:else}
                                     <span
-                                        class="badge variant-filled-error text-xs"
+                                        class="badge preset-filled-error-500 text-xs"
                                         >Urgent</span
                                     >
                                 {/if}

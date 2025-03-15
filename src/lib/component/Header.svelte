@@ -1,6 +1,5 @@
 <script>
     import { getContext } from 'svelte';
-    import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
     import { Plus } from 'lucide-svelte';
     import axios from 'axios';
 
@@ -24,7 +23,7 @@
 
                     toastStore.trigger({
                         message: 'New backlog created successfully.',
-                        background: 'variant-filled-success',
+                        background: 'preset-filled-success-500',
                     });
                 }
             },

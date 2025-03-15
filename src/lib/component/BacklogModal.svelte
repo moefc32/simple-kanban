@@ -1,6 +1,4 @@
 <script>
-    import { getModalStore } from '@skeletonlabs/skeleton';
-
     export let parent;
 
     const modalStore = getModalStore();

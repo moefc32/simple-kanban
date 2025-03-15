@@ -1,6 +1,6 @@
 <script>
     import '../app.css';
-    import { initializeStores, Modal, Toast } from '@skeletonlabs/skeleton';
+    import { ToastProvider } from '@skeletonlabs/skeleton-svelte';
 
     initializeStores();
 </script>
@@ -11,4 +11,4 @@
 
 <slot />
 <Modal />
-<Toast />
+<ToastProvider />
