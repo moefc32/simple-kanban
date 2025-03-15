@@ -2,23 +2,9 @@
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton/optional/presets';
 @import '@skeletonlabs/skeleton/themes/legacy';
-
-@import '@fontsource-variable/plus-jakarta-sans';
-
 @source "../node_modules/@skeletonlabs/skeleton-svelte/dist";
 
-@custom-variant dark (&:is(.dark *));
-
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
+@import '@fontsource-variable/plus-jakarta-sans';
 
 input::-ms-reveal,
 input::-ms-clear,
