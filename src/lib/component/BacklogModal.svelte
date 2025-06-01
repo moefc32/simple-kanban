@@ -109,7 +109,7 @@
                 class="textarea resize-none"
                 rows="6"
                 bind:value={formData.detail}
-            />
+            ></textarea>
         </label>
         <footer class="modal-footer {parent.regionFooter}">
             {#if $modalStore[0]?.meta?._id}
