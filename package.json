@@ -12,16 +12,16 @@
     "devDependencies": {
         "@skeletonlabs/skeleton": "^2.11.0",
         "@skeletonlabs/tw-plugin": "^0.4.1",
-        "@sveltejs/adapter-node": "^5.2.13",
-        "@sveltejs/kit": "^2.27.1",
+        "@sveltejs/adapter-node": "^5.3.2",
+        "@sveltejs/kit": "^2.38.1",
         "@sveltejs/vite-plugin-svelte": "^5.1.1",
         "@tailwindcss/forms": "^0.5.10",
         "@tailwindcss/typography": "^0.5.16",
         "autoprefixer": "^10.4.21",
         "postcss": "^8.5.6",
-        "svelte": "^5.37.3",
+        "svelte": "^5.38.9",
         "tailwindcss": "^3.4.17",
-        "vite": "^6.3.5"
+        "vite": "^6.3.6"
     },
     "dependencies": {
         "@fontsource-variable/plus-jakarta-sans": "^5.2.6",
@@ -29,7 +29,7 @@
         "dotenv": "^16.6.1",
         "lucide-svelte": "^0.477.0",
         "md5": "^2.3.0",
-        "mongodb": "^6.18.0"
+        "mongodb": "^6.19.0"
     },
     "pnpm": {
         "onlyBuiltDependencies": [
