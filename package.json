@@ -12,14 +12,14 @@
     "devDependencies": {
         "@skeletonlabs/skeleton": "^2.11.0",
         "@skeletonlabs/tw-plugin": "^0.4.1",
-        "@sveltejs/adapter-node": "^5.5.2",
-        "@sveltejs/kit": "^2.50.2",
+        "@sveltejs/adapter-node": "^5.5.3",
+        "@sveltejs/kit": "^2.51.0",
         "@sveltejs/vite-plugin-svelte": "^5.1.1",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.19",
         "autoprefixer": "^10.4.24",
         "postcss": "^8.5.6",
-        "svelte": "^5.50.1",
+        "svelte": "^5.50.3",
         "tailwindcss": "^3.4.19",
         "vite": "^6.4.1"
     },
@@ -27,7 +27,7 @@
         "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
         "axios": "^1.13.5",
         "dotenv": "^16.6.1",
-        "lucide-svelte": "^0.477.0",
+        "lucide-svelte": "^0.563.0",
         "md5": "^2.3.0",
         "mongodb": "^6.21.0"
     },
