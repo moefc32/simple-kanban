@@ -134,18 +134,21 @@
                                 {#if item.urgency === 'low'}
                                     <span
                                         class="badge variant-filled-surface text-xs"
-                                        >Low</span
                                     >
+                                        Low
+                                    </span>
                                 {:else if item.urgency === 'medium'}
                                     <span
                                         class="badge variant-filled-warning text-xs"
-                                        >Medium</span
                                     >
+                                        Medium
+                                    </span>
                                 {:else}
                                     <span
                                         class="badge variant-filled-error text-xs"
-                                        >Urgent</span
                                     >
+                                        Urgent
+                                    </span>
                                 {/if}
                                 <span
                                     class={`ms-auto text-xs ${
@@ -154,7 +157,10 @@
                                             : 'text-gray-700'
                                     }`}
                                 >
-                                    {'Due ' + datePrettier(item.due, false)}
+                                    {'Due ' +
+                                        datePrettier(item.due, {
+                                            date: 'short',
+                                        })}
                                 </span>
                             </div>
                         </div>
