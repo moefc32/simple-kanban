@@ -21,6 +21,10 @@ export default model(
             type: String,
             required: true,
         },
+        user_id: {
+            type: String,
+            required: true,
+        },
         detail: String,
         urgency: {
             type: String,

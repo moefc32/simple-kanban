@@ -21,13 +21,12 @@
     },
     "dependencies": {
         "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
-        "axios": "^1.13.6",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.6.1",
         "jsonwebtoken": "^9.0.3",
+        "ky": "^1.14.3",
         "lucide-svelte": "^0.563.0",
         "mongoose": "^9.2.4",
-        "mysql2": "^3.18.2",
         "notyf": "^3.10.0"
     },
     "pnpm": {

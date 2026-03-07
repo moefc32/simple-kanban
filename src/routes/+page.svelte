@@ -1,6 +1,6 @@
 <script>
-    import { List, Repeat, Search, Check } from 'lucide-svelte';
-    import axios from 'axios';
+    import { Plus, List, Repeat, Search, Check } from 'lucide-svelte';
+    import ky from 'ky';
     import datePrettier from '$lib/datePrettier';
     import notyf from '$lib/notyf';
 
@@ -12,11 +12,20 @@
     const urgencyStyles = {
         URGENT: 'badge-error text-white',
         MEDIUM: 'badge-warning',
-        LOW: 'badge-primary',
+        LOW: 'bg-gray-300',
+    };
+    const statusMap = Object.fromEntries(
+        enums.status.map(s => [s.value, s.label]),
+    );
+    const iconMap = {
+        TODO: List,
+        PROGRESS: Repeat,
+        REVIEW: Search,
+        DONE: Check,
     };
 
     let backlog = {
-        id: '',
+        _id: '',
         title: '',
         detail: '',
         urgency: 'LOW',
@@ -24,15 +33,50 @@
         status: 'TODO',
     };
 
+    async function openModalCreate(status) {
+        backlog = {
+            _id: '',
+            title: '',
+            detail: '',
+            urgency: 'LOW',
+            due_time: '',
+            status: status,
+        };
+
+        backlog_modal.showModal();
+    }
+
+    async function createBacklog() {
+        try {
+            const response = await ky
+                .post('/api/backlog', {
+                    json: backlog,
+                })
+                .json();
+
+            contents[response.data.status].push(response.data);
+
+            notyf.success('New backlog created successfully.');
+            contents = { ...contents };
+        } catch (e) {
+            console.error(e);
+            notyf.error('Cannot create backlog, please try again!');
+        }
+    }
+
     async function openModalUpdate(id) {
         try {
-            const result = await axios.get(`api/backlog?id=${id}`);
-            const { data } = result.data;
+            const result = await ky
+                .get(`api/backlog`, {
+                    searchParams: { id },
+                })
+                .json();
+            const { data } = result;
 
             data.due_time = new Date(data.due_time).toISOString().slice(0, 16);
             backlog = data;
 
-            edit_backlog.showModal();
+            backlog_modal.showModal();
         } catch (e) {
             console.error(e);
             notyf.error('Cannot open backlog, please try again!');
@@ -41,14 +85,17 @@
 
     async function updateBacklog() {
         try {
-            const result = await axios.patch(
-                `api/backlog?id=${backlog._id}`,
-                backlog,
-            );
-            const { data } = result.data;
-            data.due_time = new Date(data.due_time).getTime();
+            const result = await ky
+                .patch('api/backlog', {
+                    searchParams: { id: backlog._id },
+                    json: backlog,
+                })
+                .json();
+            const { data } = result;
 
+            data.due_time = new Date(data.due_time).getTime();
             let oldStatus = '';
+
             for (const [status, list] of Object.entries(contents)) {
                 if (list.some(item => item._id === data._id)) {
                     oldStatus = status;
@@ -79,7 +126,11 @@
 
     async function deleteBacklog() {
         try {
-            const result = await axios.delete(`api/backlog?id=${backlog._id}`);
+            const result = await ky
+                .delete('api/backlog', {
+                    searchParams: { id: backlog._id },
+                })
+                .json();
 
             contents[backlog.status] = contents[backlog.status].filter(
                 item => item._id !== backlog._id,
@@ -108,49 +159,50 @@
         contents[backlogStatus].push(item);
         contents = { ...contents };
 
-        await axios.patch(`api/backlog/?id=${item._id}`, {
-            status: backlogStatus,
-        });
+        await ky
+            .patch('api/backlog', {
+                searchParams: { id: item._id },
+                json: { status: backlogStatus },
+            })
+            .json();
     }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <main class="flex flex-1 flex-col justify-start gap-6 pt-6 w-full">
-    <div class="flex flex-1 px-3 overflow-x-auto">
+    <div class="flex flex-1 px-3 overflow-x-auto pb-3">
         {#each Object.entries(contents) as [status, backlogs], i}
             <div
-                class="flex flex-1 flex-col gap-2 px-2 mb-2 min-w-[275px] {i <
+                class="flex flex-1 flex-col gap-2 px-2 min-w-[320px] {i <
                     Object.keys(contents).length - 1 &&
                     'border-e border-gray-300'}"
             >
                 <div class="flex items-center gap-1 px-1 pb-3 border-b">
-                    {#if status === 'TODO'}
-                        <List size={16} /> To-Do
-                    {:else if status === 'PROGRESS'}
-                        <Repeat size={16} /> In Progress
-                    {:else if status === 'REVIEW'}
-                        <Search size={16} /> In Review
-                    {:else}
-                        <Check size={16} /> Done
-                    {/if}
+                    <svelte:component this={iconMap[status] || List} size={16} />
+                    <span>{statusMap[status] || 'Unknown'}</span>
+                    <button
+                        class="btn btn-success btn-xs ms-auto"
+                        on:click={() => openModalCreate(status)}
+                    >
+                        <Plus size={14} /> Create
+                    </button>
                 </div>
                 <div
-                    class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 py-3 max-h-[calc(100dvh-190px)]"
+                    class="flex flex-1 flex-col gap-1 overflow-y-auto px-1 py-2 max-h-[calc(100dvh-145px)]"
                     on:dragover={event => event.preventDefault()}
                     on:drop={event => drop(event, status)}
                 >
                     {#each backlogs as item, itemIndex (item)}
                         <div
-                            class="px-4 py-3 border rounded-lg bg-white w-full shadow-sm cursor-grab"
+                            class="px-4 py-3 border-1 border-gray-300 rounded-lg bg-white w-full shadow-lg cursor-grab"
                             title={item.title}
                             on:click={() => openModalUpdate(item._id)}
                             draggable={true}
                             on:dragstart={event =>
                                 dragStart(event, status, itemIndex)}
-                            animate:flip={{ duration: 250 }}
                         >
-                            <div class="mb-3 text-lg line-clamp-2">
+                            <div class="mb-3 line-clamp-2">
                                 {item.title}
                             </div>
                             <div class="flex items-end">
@@ -185,9 +237,11 @@
     </div>
 </main>
 
-<dialog id="edit_backlog" class="modal modal-bottom sm:modal-middle">
+<dialog id="backlog_modal" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
-        <h3 class="text-lg font-bold">Create New Backlog</h3>
+        <h3 class="text-lg font-bold">
+            {backlog._id ? 'Edit Backlog' : 'Create New Backlog'}
+        </h3>
         <div class="flex flex-col gap-4 pt-6">
             <label class="floating-label">
                 <span>Title</span>
@@ -196,7 +250,6 @@
                     class="input w-full"
                     placeholder="Backlog title"
                     bind:value={backlog.title}
-                    on:keydown={handleKeydown}
                 />
             </label>
             <label class="floating-label">
@@ -239,25 +292,41 @@
             </label>
         </div>
         <div class="modal-action mt-6">
-            <form method="dialog" class="flex gap-1 w-full">
-                <button
-                    class="btn btn-error me-auto"
-                    on:click={() => env_delete.showModal()}
-                >
-                    Delete
-                </button>
-                <button class="btn">Cancel</button>
-                <button
-                    class="btn btn-success"
-                    disabled={!backlog.title ||
-                        !backlog.urgency ||
-                        !backlog.due_time ||
-                        !backlog.status}
-                    on:click={() => updateBacklog()}
-                >
-                    <Check size={14} /> Update
-                </button>
-            </form>
+            {#if backlog._id}
+                <form method="dialog" class="flex gap-1 w-full">
+                    <button
+                        class="btn btn-outline btn-error me-auto"
+                        on:click={() => env_delete.showModal()}
+                    >
+                        Delete
+                    </button>
+                    <button class="btn">Cancel</button>
+                    <button
+                        class="btn btn-success"
+                        disabled={!backlog.title ||
+                            !backlog.urgency ||
+                            !backlog.due_time ||
+                            !backlog.status}
+                        on:click={() => updateBacklog()}
+                    >
+                        <Check size={14} /> Update
+                    </button>
+                </form>
+            {:else}
+                <form method="dialog">
+                    <button class="btn">Cancel</button>
+                    <button
+                        class="btn btn-success"
+                        disabled={!backlog.title ||
+                            !backlog.urgency ||
+                            !backlog.due_time ||
+                            !backlog.status}
+                        on:click={() => createBacklog()}
+                    >
+                        <Check size={14} /> Save
+                    </button>
+                </form>
+            {/if}
         </div>
     </div>
     <form method="dialog" class="modal-backdrop">

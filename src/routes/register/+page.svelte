@@ -1,6 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
-    import axios from 'axios';
+    import ky from 'ky';
     import notyf from '$lib/notyf';
 
     import Register from '$lib/component/Register.svelte';
@@ -20,7 +20,11 @@
         register.loading = true;
 
         try {
-            await axios.put('/api/auth', register);
+            const result = await ky
+                .put('/api/auth', {
+                    json: register,
+                })
+                .json();
 
             notyf.success('New user account registered successfully.');
             await goto('/', { invalidateAll: true });

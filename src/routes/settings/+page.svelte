@@ -1,5 +1,5 @@
 <script>
-    import axios from 'axios';
+    import ky from 'ky';
     import notyf from '$lib/notyf';
 
     import Settings from '$lib/component/Settings.svelte';
@@ -19,7 +19,11 @@
         settings.loading = true;
 
         try {
-            await axios.patch('/api/auth', settings);
+            const result = await ky
+                .patch('/api/auth', {
+                    json: settings,
+                })
+                .json();
             settings.password = '';
 
             notyf.success('Data saved successfully.');

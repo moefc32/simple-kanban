@@ -56,7 +56,7 @@ export async function POST({ cookies, request }) {
 
         return json({
             application: VITE_APP_NAME,
-            data: result
+            data: result,
         });
     } catch (e) {
         console.error(e);

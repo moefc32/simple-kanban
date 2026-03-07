@@ -19,7 +19,7 @@ export async function load({ cookies, locals }) {
         ...routes,
         userData: userData && {
             ...userData,
-            _id: userData._id.toString()
+            _id: userData._id.toString(),
         },
     };
 }

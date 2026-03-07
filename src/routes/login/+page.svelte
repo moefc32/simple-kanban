@@ -1,6 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
-    import axios from 'axios';
+    import ky from 'ky';
     import notyf from '$lib/notyf';
 
     import Login from '$lib/component/Login.svelte';
@@ -19,7 +19,11 @@
         login.loading = true;
 
         try {
-            await axios.post('/api/auth', login);
+            const result = await ky
+                .post('/api/auth', {
+                    json: login,
+                })
+                .json();
 
             notyf.success('You have successfully logged in.');
             await goto('/', { invalidateAll: true });

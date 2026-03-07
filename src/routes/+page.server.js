@@ -10,7 +10,7 @@ export async function load({ parent }) {
     );
 
     const result = await Backlogs.find({
-        user_id: userData.id,
+        user_id: userData._id,
     })
         .select('title urgency status due_time')
         .sort({ status: 1, urgency: 1 })
@@ -20,7 +20,6 @@ export async function load({ parent }) {
         .map((item) => ({
             ...item,
             _id: item._id.toString(),
-            user_id: item.user_id?.toString(),
         }))
         .sort((a, b) => {
             return enums.urgency.findIndex((u) => u.value === a.urgency)
