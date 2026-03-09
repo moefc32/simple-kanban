@@ -1,11 +1,16 @@
+<div align="center">
+<img src="./static/favicon.svg" width="80"/>
+
 # Simple Kanban
+
+**Simple Kanban board for project management**
+
 <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" height="24" /></a>
 <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/Package-PNPM-orange?style=flat-square" height="24" /></a>
 <img src="https://img.shields.io/badge/Module-ECMAScript-yellow?style=flat-square" height="24" />
+</div>
 
-Simple Kanban board for project management
-
-![image](https://github.com/user-attachments/assets/03834fee-1fdf-48b0-82fc-bd809fb06044)
+![Preview](https://github.com/user-attachments/assets/491c4d63-f15f-4a5b-ba6e-eb649eee09e0)
 
 ## Features
 - Create, update, and delete backlogs
@@ -13,10 +18,9 @@ Simple Kanban board for project management
 - Responsive design for use on both desktop and mobile devices
 
 ## Stack Used
-- [SvelteKit](https://svelte.dev/)
-- [Tailwind](https://tailwindcss.com/)
-- [Skeleton UI](https://www.skeleton.dev/)
-- [MongoDB](https://www.mongodb.com/)
+- Monolithic [SvelteKit](https://svelte.dev/)
+- [Tailwind](https://tailwindcss.com/) with [daisyUI](https://daisyui.com/)
+- [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/)
 
 ## Local Preview
 1. Clone this repository to your local computer
