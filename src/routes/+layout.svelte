@@ -30,8 +30,6 @@
             window.removeEventListener('pageshow', handleBfcache);
         };
     });
-
-    $: isValidStatusCode = $page.status >= 200 && $page.status < 300;
 </script>
 
 <svelte:head>
@@ -41,11 +39,7 @@
     </title>
 </svelte:head>
 
-{#if !isValidStatusCode}
+<div class="flex flex-1 flex-col pt-[60px] w-full">
+    <Header />
     <slot />
-{:else}
-    <div class="flex flex-1 flex-col pt-[60px] w-full">
-        <Header />
-        <slot />
-    </div>
-{/if}
+</div>

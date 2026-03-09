@@ -1,5 +1,5 @@
 import { VITE_DATABASE_URL } from '$env/static/private';
-import mongoose from 'mongoose';
+import { connect } from 'mongoose';
 import Users from './model/users'
 
 let isConnected = 0;
@@ -8,7 +8,7 @@ export async function initMongoDB() {
     if (isConnected) return;
 
     try {
-        const db = await mongoose.connect(VITE_DATABASE_URL);
+        const db = await connect(VITE_DATABASE_URL);
         isConnected = db.connections[0].readyState === 1;
     } catch (e) {
         console.error('MongoDB connection error!', e);

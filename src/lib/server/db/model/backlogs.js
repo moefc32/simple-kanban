@@ -22,8 +22,10 @@ export default model(
             required: true,
         },
         user_id: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
             required: true,
+            index: true,
         },
         detail: String,
         urgency: {
