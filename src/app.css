@@ -1,27 +1,24 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
 
 @plugin 'daisyui' {
     exclude: rootscrollgutter;
 }
 
-@import '@fontsource-variable/plus-jakarta-sans';
+@plugin "daisyui/theme" {
+    name: "light";
+    --color-primary: var(--color-sky-800);
+    --color-error-content: var(--color-white);
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    --color-primary: var(--color-sky-800);
+    --color-error-content: var(--color-white);
+}
 
 body {
     font-family: 'Plus Jakarta Sans Variable', sans-serif;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.spin {
-    animation: spin 1s linear infinite;
 }
 
 input::-ms-reveal,
@@ -31,10 +28,6 @@ input[type="search"]::-webkit-search-cancel-button {
     display: none;
 }
 
-.spin {
-    animation: spin 1s linear infinite;
-}
-
 .important {
     display: inline-block;
 }
@@ -42,21 +35,4 @@ input[type="search"]::-webkit-search-cancel-button {
 .important::after {
     content: '*';
     color: var(--color-red-500);
-}
-
-.btn-error:not(.btn-outline),
-.btn-error:focus {
-    @apply text-white;
-}
-
-.btn-error.btn-outline:hover {
-    @apply text-white;
-}
-
-.btn-primary {
-    @apply bg-sky-800 hover:bg-sky-900 text-white border-none;
-}
-
-.btn-primary:disabled {
-    @apply bg-sky-800 text-gray-200/50 saturate-35 border-none;
 }
