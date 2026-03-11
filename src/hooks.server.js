@@ -15,61 +15,73 @@ function isRouteMatch(routes, path) {
 export const handle = async ({ event, resolve }) => {
     const { cookies, url } = event;
     const currentPath = url.pathname;
-    const isTokenValid = token.validate(cookies);
 
-    const lang = cookies.get('lang');
-    const validLang = lang && ['en', 'id'].includes(lang);
+    try {
+        const isTokenValid = token.validate(cookies);
 
-    if (!validLang) {
-        cookies.set('lang', 'en', {
-            path: '/',
-            httpOnly: true,
-        });
-    }
+        const lang = cookies.get('lang');
+        const validLang = lang && ['en', 'id'].includes(lang);
 
-    event.locals.lang = validLang ? lang : 'en';
-    event.locals.publicRoutes = PUBLIC_ROUTES;
-    event.locals.unauthRoutes = UNAUTH_ROUTES;
-
-    if (isTokenValid) {
-        cookies.set('__session_active', '1', {
-            path: '/',
-            httpOnly: false,
-        });
-    } else {
-        cookies.delete('__session_active', {
-            path: '/',
-        });
-    }
-
-    let user = null;
-    let isAuthenticated = false;
-
-    if (isTokenValid) {
-        user = await checkIsUserExists(isTokenValid.id);
-        isAuthenticated = !!user;
-    }
-
-    if (!isAuthenticated) {
-        token.purge(cookies, [
-            'access_token',
-            'refresh_token',
-        ]);
-
-        if (
-            isRouteMatch(PUBLIC_ROUTES, currentPath) ||
-            isRouteMatch(UNAUTH_ROUTES, currentPath) ||
-            isRouteMatch(PUBLIC_API_ROUTES, currentPath)
-        ) {
-            return resolve(event);
+        if (!validLang) {
+            cookies.set('lang', 'en', {
+                path: '/',
+                httpOnly: true,
+            });
         }
 
-        throw redirect(303, '/login');
-    }
+        event.locals.lang = validLang ? lang : 'en';
+        event.locals.publicRoutes = PUBLIC_ROUTES;
+        event.locals.unauthRoutes = UNAUTH_ROUTES;
 
-    if (isRouteMatch(UNAUTH_ROUTES, currentPath)) {
-        throw redirect(303, '/');
-    }
+        if (isTokenValid) {
+            cookies.set('__session_active', '1', {
+                path: '/',
+                httpOnly: false,
+            });
+        } else {
+            cookies.delete('__session_active', {
+                path: '/',
+            });
+        }
 
-    return resolve(event);
+        let user = null;
+        let isAuthenticated = false;
+
+        if (isTokenValid) {
+            user = await checkIsUserExists(isTokenValid.id);
+            isAuthenticated = !!user;
+        }
+
+        if (!isAuthenticated) {
+            token.purge(cookies, [
+                'access_token',
+                'refresh_token',
+            ]);
+
+            if (
+                isRouteMatch(PUBLIC_ROUTES, currentPath) ||
+                isRouteMatch(UNAUTH_ROUTES, currentPath) ||
+                isRouteMatch(PUBLIC_API_ROUTES, currentPath)
+            ) {
+                return resolve(event);
+            }
+
+            throw redirect(303, '/login');
+        }
+
+        if (isRouteMatch(UNAUTH_ROUTES, currentPath)) {
+            throw redirect(303, '/');
+        }
+
+        return resolve(event);
+    } catch (e) {
+        if (e.status && e.status >= 300 && e.status < 400) {
+            throw e;
+        }
+
+        console.error('\n--- CRITICAL HOOK ERROR ---\n');
+        console.error(e);
+
+        return await resolve(event);
+    }
 };
