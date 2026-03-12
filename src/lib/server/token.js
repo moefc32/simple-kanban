@@ -25,6 +25,7 @@ import {
     VITE_JWT_SECRET as JWT_SECRET,
     VITE_TOKEN_PREFIX as TOKEN_PREFIX,
 } from '$env/static/private';
+import { dev as isDev } from '$app/environment';
 import jwt from 'jsonwebtoken';
 
 const PREFIX = TOKEN_PREFIX || '';
@@ -86,6 +87,8 @@ export default Object.freeze({
         cookies.set(PREFIX + name, token, {
             path: '/',
             httpOnly: true,
+            sameSite: 'lax',
+            secure: !isDev,
             ...options,
         });
     },
@@ -100,6 +103,7 @@ export default Object.freeze({
             if (typeof item === 'string') {
                 cookies.delete(PREFIX + item, {
                     path: '/',
+                    secure: !isDev,
                 });
             }
 
@@ -109,6 +113,7 @@ export default Object.freeze({
             ) {
                 cookies.delete(PREFIX + item.name, {
                     path: '/',
+                    secure: !isDev,
                     ...item?.options,
                 });
             }
