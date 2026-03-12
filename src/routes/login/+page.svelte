@@ -1,7 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
+    import { toast } from 'svelte-sonner';
     import ky from 'ky';
-    import notyf from '$lib/notyf';
 
     import Login from '$lib/component/Login.svelte';
 
@@ -25,13 +25,13 @@
                 })
                 .json();
 
-            notyf.success('You have successfully logged in.');
+            toast.success('You have successfully logged in.');
             await goto('/', { invalidateAll: true });
         } catch (e) {
             login.loading = false;
 
             console.error(e);
-            notyf.error('Login failed, please try again!');
+            toast.error('Login failed, please try again!');
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
+    import { toast } from 'svelte-sonner';
     import ky from 'ky';
-    import notyf from '$lib/notyf';
 
     import Register from '$lib/component/Register.svelte';
 
@@ -26,13 +26,13 @@
                 })
                 .json();
 
-            notyf.success('New user account registered successfully.');
+            toast.success('New user account registered successfully.');
             await goto('/', { invalidateAll: true });
         } catch (e) {
             register.loading = false;
 
             console.error(e);
-            notyf.error('Register failed, please try again!');
+            toast.error('Register failed, please try again!');
         }
     }
 </script>

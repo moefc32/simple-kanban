@@ -2,8 +2,8 @@
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
     import { Plus, Settings, LogOut, Check } from 'lucide-svelte';
+    import { toast } from 'svelte-sonner';
     import ky from 'ky';
-    import notyf from '$lib/notyf';
 
     import Avatar from './Avatar.svelte';
 
@@ -11,11 +11,11 @@
         try {
             await ky.delete('/api/auth');
 
-            notyf.success('You are now logged out.');
+            toast.success('You are now logged out.');
             await goto('/login', { invalidateAll: true });
         } catch (e) {
             console.error(e);
-            notyf.error('Logout failed, please try again!');
+            toast.error('Logout failed, please try again!');
         }
     }
 </script>

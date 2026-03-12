@@ -1,6 +1,6 @@
 <script>
+    import { toast } from 'svelte-sonner';
     import ky from 'ky';
-    import notyf from '$lib/notyf';
 
     import Settings from '$lib/component/Settings.svelte';
 
@@ -26,13 +26,13 @@
                 .json();
             settings.password = '';
 
-            notyf.success('Data saved successfully.');
+            toast.success('Data saved successfully.');
             settings.loading = false;
         } catch (e) {
             settings.loading = false;
 
             console.error(e);
-            notyf.error('Save data failed, please try again!');
+            toast.error('Save data failed, please try again!');
         }
     }
 </script>

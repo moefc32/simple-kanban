@@ -1,8 +1,8 @@
 <script>
     import '../app.css';
     import { onMount } from 'svelte';
-    import 'notyf/notyf.min.css';
     import { page } from '$app/stores';
+    import { Toaster } from 'svelte-sonner';
 
     import Header from '$lib/component/Header.svelte';
 
@@ -43,3 +43,12 @@
     <Header />
     <slot />
 </div>
+
+<Toaster
+    richColors
+    theme="system"
+    position="bottom-right"
+    toastOptions={{
+        style: 'font-size: 1rem;',
+    }}
+/>

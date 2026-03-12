@@ -1,8 +1,8 @@
 <script>
     import { Plus, List, Repeat, Search, Check } from 'lucide-svelte';
     import ky from 'ky';
+    import { toast } from 'svelte-sonner';
     import datePrettier from '$lib/datePrettier';
-    import notyf from '$lib/notyf';
 
     export let data;
 
@@ -56,11 +56,11 @@
 
             contents[response.data.status].push(response.data);
 
-            notyf.success('New backlog created successfully.');
+            toast.success('New backlog created successfully.');
             contents = { ...contents };
         } catch (e) {
             console.error(e);
-            notyf.error('Cannot create backlog, please try again!');
+            toast.error('Cannot create backlog, please try again!');
         }
     }
 
@@ -79,7 +79,7 @@
             backlog_modal.showModal();
         } catch (e) {
             console.error(e);
-            notyf.error('Cannot open backlog, please try again!');
+            toast.error('Cannot open backlog, please try again!');
         }
     }
 
@@ -116,11 +116,11 @@
                 );
             });
 
-            notyf.success('Backlog updated successfully.');
+            toast.success('Backlog updated successfully.');
             contents = { ...contents };
         } catch (e) {
             console.error(e);
-            notyf.error('Update backlog failed, please try again!');
+            toast.error('Update backlog failed, please try again!');
         }
     }
 
@@ -136,11 +136,11 @@
                 item => item._id !== backlog._id,
             );
 
-            notyf.success('Backlog deleted successfully.');
+            toast.success('Backlog deleted successfully.');
             contents = { ...contents };
         } catch (e) {
             console.error(e);
-            notyf.error('Delete backlog failed, please try again!');
+            toast.error('Delete backlog failed, please try again!');
         }
     }
 
