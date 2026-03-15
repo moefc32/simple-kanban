@@ -13,7 +13,10 @@ export default defineConfig({
         tailwindcss(),
     ],
     ssr: {
-        noExternal: ['lucide-svelte'],
+        noExternal: [
+            'lucide-svelte',
+            'svelte-sonner',
+        ],
     },
     server: {
         host: process.env.VITE_IPBIND || 'localhost',

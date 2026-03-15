@@ -44,8 +44,6 @@ export default model(
             type: Date,
             required: true,
         },
-        created_at: Date,
-        updated_at: Date,
     }, {
         versionKey: false,
         timestamps: {

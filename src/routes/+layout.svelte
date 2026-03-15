@@ -6,7 +6,7 @@
 
     import Header from '$lib/component/Header.svelte';
 
-    export let data;
+    let { children, data } = $props();
 
     onMount(() => {
         function handleBfcache(event) {
@@ -41,7 +41,7 @@
 
 <div class="flex flex-1 flex-col pt-[60px] w-full">
     <Header />
-    <slot />
+    {@render children()}
 </div>
 
 <Toaster
