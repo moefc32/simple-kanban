@@ -17,7 +17,7 @@
 </script>
 
 <div
-    class="card flex flex-col gap-2 my-auto p-6 bg-white w-full max-w-[450px] shadow-xl -top-6"
+    class="card flex flex-col gap-2 my-auto p-6 bg-white w-full max-w-80 shadow-xl -top-6"
 >
     <h1 class="my-2 text-3xl text-center">Edit Account</h1>
     <input
@@ -44,7 +44,7 @@
                 on:keydown={handleKeydown}
             />
             <button
-                class="-ms-8 text-black z-[100] cursor-pointer"
+                class="-ms-8 text-black z-10 cursor-pointer"
                 title="Click to show password"
                 on:click={() => (showPassword = !showPassword)}
             >
@@ -59,7 +59,7 @@
                 on:keydown={handleKeydown}
             />
             <button
-                class="-ms-8 text-black z-[100] cursor-pointer"
+                class="-ms-8 text-black z-10 cursor-pointer"
                 title="Click to hide password"
                 on:click={() => (showPassword = !showPassword)}
             >
