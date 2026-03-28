@@ -174,7 +174,7 @@
     <div class="flex flex-1 px-3 overflow-x-auto pb-3">
         {#each Object.entries(contents) as [status, backlogs], i}
             <div
-                class="flex flex-1 flex-col gap-2 px-2 min-w-[320px] {i <
+                class="flex flex-1 flex-col gap-2 px-2 min-w-80 {i <
                     Object.keys(contents).length - 1 &&
                     'border-e border-gray-300'}"
             >
