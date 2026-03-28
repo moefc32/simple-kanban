@@ -21,17 +21,17 @@
 </script>
 
 <header
-    class="navbar flex justify-center bg-sky-800 text-white ps-6 pe-3 h-[60px] fixed top-0 left-0 z-[1000] shadow"
+    class="navbar flex justify-center bg-sky-800 text-white ps-6 pe-3 h-15 fixed top-0 left-0 z-1200 shadow"
 >
     <div class="flex">
         <a
             href="/"
-            class="flex items-center ps-10 bg-[url('/favicon.svg')] bg-left bg-no-repeat bg-contain text-xl font-semibold h-[32px] cursor-pointer"
+            class="flex items-center ps-10 bg-[url('/favicon.svg')] bg-left bg-no-repeat bg-contain text-xl font-semibold h-8 cursor-pointer"
         >
             {import.meta.env.VITE_APP_NAME}
         </a>
     </div>
-    <div class="flex gap-1 ms-auto text-[16px]">
+    <div class="flex gap-1 ms-auto">
         {#if $page.data.userData}
             <ul class="menu menu-horizontal">
                 <li>

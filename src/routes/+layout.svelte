@@ -39,7 +39,7 @@
     </title>
 </svelte:head>
 
-<div class="flex flex-1 flex-col pt-[60px] w-full">
+<div class="flex flex-1 flex-col pt-15 w-full">
     <Header />
     {@render children()}
 </div>
