@@ -29,7 +29,7 @@
         title: '',
         detail: '',
         urgency: 'LOW',
-        due_time: '',
+        dueTime: '',
         status: 'TODO',
     };
 
@@ -39,7 +39,7 @@
             title: '',
             detail: '',
             urgency: 'LOW',
-            due_time: '',
+            dueTime: '',
             status: status,
         };
 
@@ -73,7 +73,7 @@
                 .json();
             const { data } = result;
 
-            data.due_time = new Date(data.due_time).toISOString().slice(0, 16);
+            data.dueTime = new Date(data.dueTime).toISOString().slice(0, 16);
             backlog = data;
 
             backlog_modal.showModal();
@@ -93,7 +93,7 @@
                 .json();
             const { data } = result;
 
-            data.due_time = new Date(data.due_time).getTime();
+            data.dueTime = new Date(data.dueTime).getTime();
             let oldStatus = '';
 
             for (const [status, list] of Object.entries(contents)) {
@@ -179,7 +179,10 @@
                     'border-e border-gray-300'}"
             >
                 <div class="flex items-center gap-1 px-1 pb-3 border-b">
-                    <svelte:component this={iconMap[status] || List} size={16} />
+                    <svelte:component
+                        this={iconMap[status] || List}
+                        size={16}
+                    />
                     <span>{statusMap[status] || 'Unknown'}</span>
                     <button
                         class="btn btn-success btn-xs ms-auto"
@@ -218,13 +221,13 @@
                                 <span
                                     class={`ms-auto text-xs ${
                                         status !== 'DONE' &&
-                                        item.due_time < today
+                                        item.dueTime < today
                                             ? 'text-red-500'
                                             : 'text-gray-700'
                                     }`}
                                 >
                                     {'Due ' +
-                                        datePrettier(item.due_time, {
+                                        datePrettier(item.dueTime, {
                                             date: 'short',
                                         })}
                                 </span>
@@ -276,7 +279,7 @@
                 <input
                     type="datetime-local"
                     class="input w-full"
-                    bind:value={backlog.due_time}
+                    bind:value={backlog.dueTime}
                 />
             </label>
             <label class="floating-label">
@@ -305,7 +308,7 @@
                         class="btn btn-success"
                         disabled={!backlog.title ||
                             !backlog.urgency ||
-                            !backlog.due_time ||
+                            !backlog.dueTime ||
                             !backlog.status}
                         on:click={() => updateBacklog()}
                     >
@@ -319,7 +322,7 @@
                         class="btn btn-success"
                         disabled={!backlog.title ||
                             !backlog.urgency ||
-                            !backlog.due_time ||
+                            !backlog.dueTime ||
                             !backlog.status}
                         on:click={() => createBacklog()}
                     >

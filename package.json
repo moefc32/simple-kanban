@@ -13,10 +13,10 @@
         "@sveltejs/adapter-node": "^5.5.4",
         "@sveltejs/kit": "^2.57.1",
         "@sveltejs/vite-plugin-svelte": "^5.1.1",
-        "@tailwindcss/vite": "^4.2.2",
+        "@tailwindcss/vite": "^4.2.4",
         "daisyui": "^5.5.19",
         "svelte": "^5.55.4",
-        "tailwindcss": "^4.2.2",
+        "tailwindcss": "^4.2.4",
         "vite": "^6.4.2"
     },
     "dependencies": {
@@ -26,7 +26,7 @@
         "jsonwebtoken": "^9.0.3",
         "ky": "^1.14.3",
         "lucide-svelte": "^0.563.0",
-        "mongoose": "^9.4.1",
+        "mongoose": "^9.5.0",
         "svelte-sonner": "^1.1.0"
     },
     "pnpm": {

@@ -21,11 +21,10 @@ export default model(
             type: String,
             required: true,
         },
-        user_id: {
+        userId: {
             type: Schema.Types.ObjectId,
             ref: 'Users',
             required: true,
-            index: true,
         },
         detail: String,
         urgency: {
@@ -40,15 +39,16 @@ export default model(
             enum: enums.status.map((s) => s.value),
             default: 'TODO',
         },
-        due_time: {
+        dueTime: {
             type: Date,
             required: true,
         },
     }, {
         versionKey: false,
         timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at',
+            createdAt: true,
+            updatedAt: true,
         },
     })
+        .index({ userId: 1, status: 1, urgency: 1 })
 );

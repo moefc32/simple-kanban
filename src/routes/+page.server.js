@@ -10,9 +10,9 @@ export async function load({ parent }) {
     );
 
     const result = await Backlogs.find({
-        user_id: userData._id,
+        userId: userData._id,
     })
-        .select('title urgency status due_time')
+        .select('title urgency status dueTime')
         .sort({ status: 1, urgency: 1 })
         .lean();
 

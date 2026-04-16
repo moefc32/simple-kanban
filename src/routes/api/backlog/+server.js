@@ -26,14 +26,14 @@ export async function POST({ cookies, request }) {
         title = '',
         detail = '',
         urgency = '',
-        due_time = '',
+        dueTime = '',
         status = '',
     } = await request.json() || {};
 
     if (
         !title ||
         !urgency ||
-        !due_time ||
+        !dueTime ||
         !status
     ) {
         return json({
@@ -46,11 +46,11 @@ export async function POST({ cookies, request }) {
 
     try {
         const result = await Backlogs.create({
-            user_id: decoded_token?.id,
+            userId: decoded_token?.id,
             title,
             detail,
             urgency,
-            due_time: new Date(due_time),
+            dueTime: new Date(dueTime),
             status: status ?? 'TODO'
         });
 
@@ -77,7 +77,7 @@ export async function PATCH({ url, request }) {
             title = '',
             detail = '',
             urgency = '',
-            due_time = '',
+            dueTime = '',
             status = '',
         } = await request.json() || {};
 
@@ -85,7 +85,7 @@ export async function PATCH({ url, request }) {
 
         if (title) data.title = title;
         if (urgency) data.urgency = urgency;
-        if (due_time) data.due_time = new Date(due_time);
+        if (dueTime) data.dueTime = new Date(dueTime);
         if (status) data.status = status;
         data.detail = detail;
 
