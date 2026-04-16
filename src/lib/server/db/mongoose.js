@@ -4,11 +4,6 @@ import Users from './model/users'
 
 const { connect, connection } = mongoose;
 
-async function shutdown() {
-    await connection.close();
-    process.exit(0);
-};
-
 export async function initMongoDB() {
     if (connection.readyState === 1) return;
 
@@ -33,6 +28,11 @@ export async function checkIsUserExists(id) {
         .select('_id').lean();
 
     return !!user;
+}
+
+async function shutdown() {
+    await connection.close();
+    process.exit(0);
 }
 
 process.on('SIGINT', shutdown);
