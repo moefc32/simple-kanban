@@ -1,5 +1,5 @@
 <script>
-    import { Eye, EyeOff, LogIn } from 'lucide-svelte';
+    import { Eye, EyeOff, LogIn } from '@lucide/svelte';
     import isValidEmail from '$lib/isValidEmail';
 
     export let login;

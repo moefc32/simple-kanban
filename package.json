@@ -11,21 +11,22 @@
     },
     "devDependencies": {
         "@sveltejs/adapter-node": "^5.5.7",
-        "@sveltejs/kit": "^2.70.1",
+        "@sveltejs/kit": "^2.70.3",
         "@sveltejs/vite-plugin-svelte": "^5.1.1",
         "@tailwindcss/vite": "^4.3.3",
-        "daisyui": "^5.7.4",
-        "svelte": "^5.56.8",
+        "daisyui": "^5.7.38",
+        "svelte": "^5.57.0",
         "tailwindcss": "^4.3.3",
         "vite": "^6.4.3"
     },
     "dependencies": {
         "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+        "@lucide/svelte": "^1.46.0",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.6.1",
         "jsonwebtoken": "^9.0.3",
         "ky": "^1.14.3",
-        "mongoose": "^9.8.1",
-        "svelte-sonner": "^1.1.1"
+        "mongoose": "^9.10.1",
+        "svelte-sonner": "^1.2.1"
     }
 }

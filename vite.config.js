@@ -14,7 +14,7 @@ export default defineConfig({
     ],
     ssr: {
         noExternal: [
-            'lucide-svelte',
+            '@lucide/svelte',
             'svelte-sonner',
         ],
     },
