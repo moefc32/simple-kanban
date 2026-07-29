@@ -1,5 +1,5 @@
 <script>
-    import { Plus, List, Repeat, Search, Check } from 'lucide-svelte';
+    import { Plus, List, Repeat, Search, Check } from '@lucide/svelte';
     import ky from 'ky';
     import { toast } from 'svelte-sonner';
     import datePrettier from '$lib/datePrettier';

@@ -1,5 +1,5 @@
 <script>
-    import { Eye, EyeOff, Check } from 'lucide-svelte';
+    import { Eye, EyeOff, Check } from '@lucide/svelte';
     import isValidEmail from '$lib/isValidEmail';
 
     import Avatar from './Avatar.svelte';

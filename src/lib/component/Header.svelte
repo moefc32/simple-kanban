@@ -1,7 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
-    import { Plus, Settings, LogOut, Check } from 'lucide-svelte';
+    import { Plus, Settings, LogOut, Check } from '@lucide/svelte';
     import { toast } from 'svelte-sonner';
     import ky from 'ky';
 
